@@ -1,0 +1,31 @@
+name: Deploy to EC2
+
+on:
+  workflow_dispatch:  # Adjust branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::238573859336:role/OIDC-deployment
+          role-session-name: OIDC-deployment
+          aws-region: ap-south-1
+
+      - name: Install SSH client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@3.109.5.203 << 'EOF'
+            cd /home/ubuntu/thinkmer
+            git pull origin main
+            docker-compose down
+            docker-compose up -d
+          EOF

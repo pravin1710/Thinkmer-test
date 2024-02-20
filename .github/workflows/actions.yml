@@ -21,7 +21,7 @@ jobs:
            chmod 600 private_key.pem
            ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@3.109.5.203 << 'EOF'
     
-            cd /home/ubuntu/thinkmer
+            cd /home/ubuntu/thinkmer/Thinkmer-test
             git pull origin main
             docker-compose down
             docker-compose up -d

@@ -19,7 +19,7 @@ jobs:
            echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key.pem
            cat private_key.pem
            chmod 600 private_key.pem
-           ssh -i private_key.pem ubuntu@3.109.5.203 << 'EOF'
+           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@3.109.5.203 << 'EOF'
     
             cd /home/ubuntu/thinkmer
             git pull origin main
